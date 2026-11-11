@@ -1,0 +1,84 @@
+@import 'tailwindcss';
+
+/*
+ * Each client's brand colours arrive as --primary and --accent (set on <body> by the layout,
+ * see themeStyle in src/lib/site.ts), along with --radius-* for the corner style.
+ * These tokens replace the fixed blue-600 / blue-700 / blue-100 / purple-400 of the reference
+ * design, so "bg-primary", "hover:bg-primary-dark", "bg-primary-soft", "bg-accent" re-colour
+ * per client, and "rounded-lg" follows the client's corner setting.
+ */
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-dark: color-mix(in srgb, var(--primary) 82%, black);
+  --color-primary-darker: color-mix(in srgb, var(--primary) 65%, black);
+  --color-primary-soft: color-mix(in srgb, var(--primary) 12%, white);
+  --color-primary-light: color-mix(in srgb, var(--primary) 45%, white);
+  --color-accent: var(--accent);
+  --color-accent-dark: color-mix(in srgb, var(--accent) 85%, black);
+}
+
+@layer base {
+  /* Same default border colour as the reference (shadcn "border" token). */
+  *, ::before, ::after { border-color: #e2e8f0; }
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+  /* Number inputs without spinner arrows, as in the reference. */
+  input.no-spinner::-webkit-outer-spin-button,
+  input.no-spinner::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  input.no-spinner { -moz-appearance: textfield; appearance: textfield; }
+}
+
+/* Smooth scrolling to #enquiry, only for people who have not asked for less motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+/* Entrance used by the floating contact buttons and the splash screen. */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(1rem); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .animate-rise-in { animation: rise-in 0.3s ease-out both; }
+}
+
+/*
+ * Swiper ships its own unlayered CSS, so these overrides are unlayered too.
+ * Dots sit below the slides in the client's brand colour (white on the hero image),
+ * 10px like the reference.
+ */
+.swiper {
+  --swiper-theme-color: var(--primary);
+  --swiper-pagination-bullet-inactive-color: var(--primary);
+  --swiper-pagination-bullet-inactive-opacity: 0.5;
+  --swiper-pagination-bullet-size: 10px;
+}
+.swiper-pagination { position: relative !important; bottom: 0 !important; margin-top: 2rem; }
+.hero-swiper {
+  --swiper-theme-color: #fff;
+  --swiper-pagination-bullet-inactive-color: #fff;
+  --swiper-pagination-bullet-inactive-opacity: 0.5;
+}
+.hero-swiper .swiper-pagination { position: absolute !important; bottom: 2rem !important; margin-top: 0; }
+
+/* Same container widths as the reference (Tailwind 3 screens, 1400px at 2xl). */
+@utility container {
+  width: 100%;
+  margin-inline: auto;
+  @media (width >= 40rem) { max-width: 40rem; }
+  @media (width >= 48rem) { max-width: 48rem; }
+  @media (width >= 64rem) { max-width: 64rem; }
+  @media (width >= 80rem) { max-width: 80rem; }
+  @media (width >= 96rem) { max-width: 1400px; }
+}
+
+/*
+ * Optional splash screen (see SplashScreen.tsx). Pure CSS so it never blocks the page:
+ * it fades out by itself after 2 seconds, and a tiny script in <head> marks the session
+ * as having seen it so it shows only on the first page of a visit.
+ */
+@keyframes splash-out { to { opacity: 0; visibility: hidden; } }
+#site-splash { animation: splash-out 0.3s ease 2s forwards; }
+html[data-splash-seen] #site-splash { display: none; }
