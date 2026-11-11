@@ -1,3 +1,6 @@
+# medisite-cloud
+Multi-tenant pharma catalogue websites run from one dashboard: per-client branding, product import from CSV/Excel, password-locked prices, company-wise PDF catalogues and WhatsApp ordering. Built with Next.js 16, Payload CMS 3 and PostgreSQL.
+
 # Pharma Sites: multi-client website platform (skeleton)
 
 > New to the code? Start with **[docs/DEVELOPER_GUIDE.md](docs/DEVELOPER_GUIDE.md)**: where every file lives and how to make common changes.
